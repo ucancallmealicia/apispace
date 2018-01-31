@@ -9,7 +9,7 @@ import json
 #import pymysql
 from apispace import admin
 from apispace import schema
-from apispace import config
+#from apispace import config
 import time
 import pprint
 
@@ -17,21 +17,7 @@ import pprint
 To-Do:
 -Add 'jsonmodel_type' to all functions if missing
 -Add outfiles as needed
--Timekeeping
-
- Assorted Notes ###
-#use queries to pull data - manipulate results in open refine or something else, post back to AS using these
-#functions
-#to use the CSV, put in the row number as the argument? Or do I not have to worry?
-#should note which notes are top level and which are subnotes...I don't really even know until looking at JSON
-#what should I do if there are multiple subnotes??...if using persistent ID maybe doesn't matter?
-#change this to combine. Do something like if jsonmodel_type == 'note_singlepart' do first one
-#if jsonmodel_type == 'note_multipart' do second
-#Could do replace_note_by_id or replace_note_by_type...
-#also, would this work for adding a note where none exists? Could I make it so or do I need a new function, like "create_note"
-#write some stuff to handle empty rows or variable row numbers
-#should I write different functions to enable changing single parts of date and extent modules, etc?
-'''
+-Timekeeping '''
 
 ##################### FUNCTIONS #####################
 
@@ -238,19 +224,19 @@ def create_extents():
     values = admin.login()
     csvfile = admin.opencsv()
     for row in csvfile:
-        resource_uri = row[0]
+        record_uri = row[0]
         container_summary = row[1]
         extent_type = row[2]
         number = row[3]
         portion = row[4]
-        resource_json = requests.get(values[0] + resource_uri, headers=values[1]).json()
+        record_json = requests.get(values[0] + record_uri, headers=values[1]).json()
         new_extent = {'container_summary': container_summary,
                   'extent_type': extent_type, 'jsonmodel_type': 'extent',
                   'number': number, 'portion': portion}
-        resource_json['extents'].append(new_extent)
-        resource_data = json.dumps(resource_json)
-        resource_update = requests.post(values[0] + resource_uri, headers=values[1], data=resource_data).json()
-        print(resource_update)
+        record_json['extents'].append(new_extent)
+        record_data = json.dumps(record_json)
+        record_update = requests.post(values[0] + record_uri, headers=values[1], data=record_data).json()
+        print(record_update)
 
 def create_external_documents():
     values = admin.login()
@@ -258,6 +244,8 @@ def create_external_documents():
     for row in csvfile:
         record_uri = row[0]
         record_json = requests.get(values[0] + record_uri, headers=values[1]).json()
+        new_ext_doc = {'jsonmodel_type': 'external_document'}
+        record_json['external_documents'].append(new_ext_doc)
         record_data = json.dumps(record_json)
         record_update = requests.post(values[0] + record_uri, headers=values[1], data=record_data).json()
         print(record_update)

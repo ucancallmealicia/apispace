@@ -1,12 +1,12 @@
 #/usr/bin/python3
 #~/anaconda3/bin/python
 
-#Schema for version 2.x
-
 import pprint, requests, re
 from collections import defaultdict
 from apispace import admin
+from apispace.admin import writealltxt
 
+#This is not in use - other functions pull directly from API
 def schemas():
     schema = {'abstract_agent': {'$schema': 'http://www.archivesspace.org/archivesspace.json',
                         'properties': {'agent_contacts': {'items': {'type': 'JSONModel(:agent_contact) '
@@ -6276,13 +6276,10 @@ def get_new_schema(schema):
     get_schema = requests.get(values[0] + '/schemas/' + str(schema), headers=values[1]).json()
     return(get_schema)
 
-#this is a crazy thing to do and should not be here forever. And if I do keep it I should at least get
-#rid of some of the repeating bs - sure I can do the same thing some other way
-#add something here so that the subnotes are captured as well. 
-#at the end, do a fromkeys with the notes
+#Can I add this to the schema_to_dict so I only have to call schema once?
 def parse_notes():
     #loads in the schema
-    s = schemas()
+    s = get_new_schemas()
     #sets up a defaultdict 
     new_dict = defaultdict(list)
     name = r'^names'
@@ -6336,7 +6333,7 @@ def parse_notes():
 #parse JSON schema for use in record creation functions - everything but notes and names. 
 def schema_to_dict():
     #load in the schema
-    schema = schemas()
+    schema = get_new_schemas()
     #create dictionary to store data types and values
     schema_dict = {}
     #loop through top level of schema and retrieve top-level record name
@@ -6353,33 +6350,33 @@ def schema_to_dict():
                 schema_dict[key] = dict.fromkeys(prop_list)
                 #feels weird to have this all here, but I think it should be since this is where I called the schema- I could do it
                 #again but that seems excessive
-#                 for k, v in subval.items():
-#                     #was there anything besides this that was weird? 
-#                     weird_list = ['linked_agents', 'linked_events']
-#                     if k in weird_list
-#                     if k == 'linked_agents':
-#                         #print(v)
-#                         for kkk, vvv in v.items():
-#                             if kkk == 'items':
-#                                 #pprint.pprint(vvv)
-#                                 for kkkk, vvvv in vvv.items():
-#                                     if kkkk == 'properties':
-#                                         #fuck there are also dynamic enums here.
-#                                         for k5, v5 in vvvv.items():
-#                                             print(k5)
-#                                             print(v5)
-                    
-#                     for kk, vv in v.items():
-#                         if kk == 'enum':
-#                             print('key1: ' + str(key))
-#                             print('key2: ' + str(k))
-#                             print('key3: ' + str(kk))
-#                             print('value: ' + str(vv))
-#                         if kk == 'dynamic_enum':
-#                             print('key1: ' + str(key))
-#                             print('key2: ' + str(k))
-#                             print('key3: ' + str(kk))
-#                             print('value: ' + str(vv))
+                for k, v in subval.items():
+                    #was there anything besides this that was weird? 
+                    weird_list = ['linked_agents', 'linked_events']
+                    if k in weird_list:
+#                    if k == 'linked_agents':
+                        #print(v)
+                        for kkk, vvv in v.items():
+                            if kkk == 'items':
+                                #pprint.pprint(vvv)
+                                for kkkk, vvvv in vvv.items():
+                                    if kkkk == 'properties':
+                                        #fuck there are also dynamic enums here.
+                                        for k5, v5 in vvvv.items():
+                                            print(k5)
+                                            print(v5)
+                     
+                    for kk, vv in v.items():
+                        if kk == 'enum':
+                            print('key1: ' + str(key))
+                            print('key2: ' + str(k))
+                            print('key3: ' + str(kk))
+                            print('value: ' + str(vv))
+                        if kk == 'dynamic_enum':
+                            print('key1: ' + str(key))
+                            print('key2: ' + str(k))
+                            print('key3: ' + str(kk))
+                            print('value: ' + str(vv))
     #pprint.pprint(schema_dict)
     return(schema_dict)
 
@@ -6447,6 +6444,7 @@ def parse_schema():
 #Now I may not need this who add subrecords thing, except to add refs andd add dynamic enum
 #'parent', 'ancestor', 'series',  - wont fix these
 def add_refs():
+    outfile = admin.opentxt()
     schema_dict = parse_schema()
     #make sure that the location for external docs is a ref.
     #not sure if digital object should be in here...i think it's actually a true or false
@@ -6467,9 +6465,11 @@ def add_refs():
                 for k2  in v.keys():
                     if k2 in ref_list:
                         v[k2] = {'ref': None}
-    pprint.pprint(schema_dict['resource'])
+    writealltxt(outfile, schema_dict)
+    #pprint.pprint(schema_dict)
     return(schema_dict)
 
+add_refs()
 
 '''
 To-Do, Thoughts, Etc.
@@ -6488,7 +6488,7 @@ To-Do, Thoughts, Etc.
 
 -Obviously most of these functions are pretty hacky and need to be cleaned up, but this serves as a proof of concept/starting point
 
-#add_refs()
+add_refs()
 #schema_to_dict()
 #parse_schema()
 #parse_notes()

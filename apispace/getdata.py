@@ -1,12 +1,8 @@
 #/usr/bin/python3
 #~/anaconda3/bin/python
 
-import requests
-import json
-import csv
+import requests, json, csv #, subprocess
 from apispace import admin
-
-#also must figure out if these return actual values or just lists of IDs - probably the latter
 
 global_record_types = ['agents/corporate_entities', 'agents/families', 'agents/people', 'agents/software', 'by-external-id', 'config/enumerations', 'container_profile',
                        'location_profiles', 'locations', 'permissions', 'reports', 'repositories', 'schemas', 'subjects', 'terms', 'users', 'users/complete'
@@ -16,10 +12,7 @@ repo_record_types = ['accessions', 'archival_objects', 'classification_terms', '
                      'digital_objects', 'events', 'groups', 'jobs', 'jobs/active', 'jobs/archived', 'jobs/import_types', 'preferences', 'rde_templates',
                      'resources', 'top_containers']
 
-#make it so we can get a list based on URI?? I dunno, could add a million things.
-#change name of output file...
-
-#are there other configs I can join in with this?
+#Gets a list of enumerations
 def get_enumerations():
     values = admin.login()
     output = admin.opentxt()
@@ -27,8 +20,7 @@ def get_enumerations():
     json.dump(enumerations, output, indent=4, separators=(',', ':'))
     output.close()
 
-#change this back to original....just added it to get dos....do this tomorrow in PROD; also should figure out if I want the txt file names to change depending on what I'm doing
-#can't remember what the original looked like, though..
+#Gets JSON for record types which are specific to a repository
 def get_repo_json(record_type, repo_id):
     values = admin.login()
     output = admin.opentxt()
@@ -42,6 +34,7 @@ def get_repo_json(record_type, repo_id):
         print('Dumping ' + str(x) + ' of ' + str(len(get_ids)))
         output.close()
 
+#Gets JSON for record types shared across repositories
 def get_global_json(record_type):
     values = admin.login()
     output = admin.opentxt()
@@ -55,19 +48,37 @@ def get_global_json(record_type):
         print('Dumping ' + str(x) + ' of ' + str(len(get_ids)))
     output.close()
 
-def export_ead():
-    return
+#Takes a single resource ID as input and outputs EAD
+def export_ead(repo_id, resource):
+    values = admin.login()
+    output = admin.opentxt()
+    get_ead = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resource_descriptions/' + str(resource) + '.xml?include_unpublished=true', headers=values[1], stream=True).text
+    output.write(str(get_ead))
+    output.close()
 
-# def get_ead(repo_id):
-#     values = admin.login()
-#     #do not use this - make a new text file script so that I can save multiples
-#     output = admin.opentxt()
-#     get_ids = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resources?all_ids=true', headers=values[1]).json()
-#     x = 0
-#     for i in get_ids:
-#         x = x + 1
-#         resource = requests.get(values[0] + '/repositories/' + str(repo_id) + '/' + str(record_type) + '/' + str(i) + '.xml', headers=values[1], stream=True)
-#         #add something new here - want the files to be named by the resource_id
+#Takes a list of resource IDs as input and outputs EAD
+#add subprocess option here for running transformations
+#Can do an ead3 option too
+def export_eads(repo_id):
+    values = admin.login()
+    infile = admin.readtxt()
+    dirpath = admin.setdirectory()
+    for resource in infile:
+        get_ead = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resource_descriptions/' + str(resource) + '.xml?include_unpublished=true', headers=values[1], stream=True).text
+        outfile = admin.opentxts(dirpath, resource)
+        outfile.write(str(get_ead))
+        outfile.close()
+    input.close()
+        
+def export_all_ead(repo_id):
+    values = admin.login()
+    dirpath = admin.setdirectory()
+    get_ids = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resources?all_ids=true', headers=values[1]).json()
+    for resource in get_ids:
+        get_ead = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resource_descriptions/' + str(resource) + '.xml?include_unpublished=true', headers=values[1], stream=True).text
+        outfile = admin.opentxts(dirpath, resource)
+        outfile.write(str(get_ead))
+        outfile.close()
 
 #if you just want a list of IDs? Why would this be?
 def get_repo_ids(record_type, repo_id):
@@ -81,34 +92,6 @@ def get_global_ids(record_type):
     output = admin.opentxt()
     get_ids = requests.get(values[0] + '/' + str(record_type) + '?all_ids=true', headers=values[1]).json()
     output.write(get_ids)
-
-
-# def get_data_from_list():
-#     values = admin.login()
-#     csvfile = admin.opencsv()
-# #    output = admin.opentxt()
-# #    csvoutfile = admin.opencsvout()
-#     for row in csvfile:
-#         ao_uri = row[0]
-# #        tc_uri = row[1]
-#         ao_json = requests.get(values[0] + ao_uri, headers=values[1]).json()
-#         for key, value in ao_json.items():
-#             if key == 'title':
-#                 print(value)
-#             if key == 'notes':
-#                 for note in value:
-#                     for subkey, subvalue in note.items():
-#                         if subvalue == 'accessrestrict':
-#                             print(note['subnotes'][0]['content'])
-#        output.write(str(ao_json))
-#         tc_json = requests.get(values[0] + tc_uri, headers=values[1]).json()
-#         for key, value in tc_json.items():
-#             if key == 'active_restrictions':
-#                 for member in value:
-#                     for subkey, subvalue in member.items():
-#                         newlist = [subkey, subvalue]
-#                         row.append(newlist)
-#         csvoutfile.writerow(row)
             
 #change to have repo num and note type in argument?
 def get_note_ids():
@@ -218,6 +201,8 @@ def get_uris():
                     writer.writerows([row])
     output.close()
     cursor.close()
+
+#possibly a place to wrap some sql queries
 
 #def replace_note_by_type():
 

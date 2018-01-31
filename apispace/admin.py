@@ -91,15 +91,28 @@ def opencsvout():
     csvout = csv.writer(file)
     return csvout
 
-#is this right?
+def readtxt():
+    filepath = input('Please enter path to input text file: ')
+    filename = open(filepath, encoding='utf-8')
+    read = filename.read()
+    return read
+
 def opentxt():
     filepath = input('Please enter path to output text file: ')
-    filename = open(filepath, 'a' )
+    filename = open(filepath, 'a', encoding='utf-8')
     return filename
+
+def setdirectory():
+    directory = input('Please enter path to output directory: ')
+    return directory
+
+def opentxts(directory, filename):
+    filepath = open(directory + '/' + filename, 'w', encoding='utf-8')
+    return filepath
 
 def writealltxt(file, jsonname):
     for key, value in jsonname.items():
-        file.write('%s:%s\n' % (key, value))
+        file.write('%s:%s\n' % (key, value) + '\n')
 
 def writetxt(file, jsonname):
     for key, value in jsonname.items():

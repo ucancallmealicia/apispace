@@ -159,9 +159,16 @@ Use `template` functions to download CSV templates for use with `description` fu
 
 #### Create Descriptive Records
 
-description.**create_records(jsonmodel_type, **subrecords)
+description.**create_records(jsonmodel_type, **subrecords)**
 
-Creates one or more records of any type, with any number of subrecord fields.
+Creates one or more records of any type, with any number of record and subrecord fields. This function pulls in data 
+from the ArchivesSpace schema via a request to the API. Gien the record type and any subrecords as arguments, it 
+matches the record type, the properties of each record type, and any subrecord fields with the data in the schema, 
+and then constructs a JSON object based on the column headers of the input CSV.
+
+This function enables users to create any kind of record, with any number of fields, using a single function. Because
+the schema is pulled in from the API, users will be able to utilize the schema which corresponds to their version of
+ArchivesSpace.
 
 description.**repositories()**  
 

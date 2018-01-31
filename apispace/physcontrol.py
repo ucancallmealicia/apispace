@@ -7,7 +7,8 @@ import requests
 import json
 from apispace import admin
 
-#includes collection management
+#Includes assessment
+#Includes collection management
 
 def create_top_containers():
     values = admin.login()
@@ -66,33 +67,8 @@ def update_tc_components():
         record_data = json.dumps(record_json)
         record_update = requests.post(values[0] + record_uri, headers=values[1], data=record_data).json()
         print(record_update)
-        
-#This probably won't work anymore? Then how do I attach instances? Check what the JSON looks like for an ArchObj instance
-#Ok, so now, to create an instance, just need to add the instance type, jsonmodel type, and subcontainer
-#Everything else will live in the TC json - this actually makes sense, though it's annoying
-# def create_instances():
-#     values = admin.login()
-#     csvfile = admin.opencsv()
-#     for row in csvfile:
-#         archival_object_uri = row[0]
-#         top_container_uri = row[1]
-#         barcode = row[2]
-#         indicator = row[3]
-#         archival_object_json = requests.get(values[0] + archival_object_uri, headers=values[1]).json()
-#         new_instance = {"container": {"barcode_1": barcode, "indicator_1": indicator, "type_1": "box"}, 
-#                             "instance_type": "mixed_materials", "jsonmodel_type": "instance", "sub_container": {"jsonmodel_type": "sub_container", 
-#                             "top_container": {"ref": top_container_uri}}}
-#         archival_object_json["instances"].append(new_instance)
-#         archival_object_data = json.dumps(archival_object_json)
-#         archival_object_update = requests.post(values[0]+archival_object_uri, headers=values[1], data=archival_object_data).json()
-#         print(archival_object_update)
 
-#THIS IS FOR 2.x
-#but what about the folder number? Do I need that?
-#PS looks like you don't even need to have the repo URI - I think I used this without, but should make sure that's right...theres a repo
-#ref in both the instance and subcontainer stuff
-#What if it's a digital object instance??? 
-#what the heck is up with the display string fr the subcontainer? Why would you need that? There are already types...
+#add for digital object instance 
 def create_instances():
     values = admin.login()
     csvfile = admin.opencsv()
@@ -126,7 +102,7 @@ def create_instances():
         print(archival_object_update)
 
 def create_do_instances():
-    print('placeholder')
+    return
 
 #Updates sub_container components within an instance record - i.e child and grandchild types and indicators, and the top
 #container URI. Don't have anything to update the instance type, but only because that's probably not necessary

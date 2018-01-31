@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>/Users/aliciadetelich/Dropbox/apispace/.README.md.html</title>
+<title>/Users/aliciadetelich/git/apispace/.README.md.html</title>
 
 
 <style type="text/css">
@@ -641,6 +641,7 @@ function setDocumentScrollTop(ypos)
 <body class="markdown-body">
 <h1> <a id="apispace" class="anchor" href="#apispace" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>apispace</h1> 
 <p>A beta/hyper-prototypical/incomplete/work-in-progress Python package that uses CSVs to interact with the ArchivesSpace API.</p> 
+<p>NOTE: Use at your own risk. Much of this is still unfinished, but the description functions have been tested. Further additions to the code and more documentation is coming soon.</p> 
 <h3> <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h3> 
 <ul> 
  <li>Python 3.4+</li> 
@@ -650,9 +651,8 @@ function setDocumentScrollTop(ypos)
  <li>Access to ArchivesSpace Database</li> 
 </ul> 
 <h3> <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3> 
-<p>clone repository and cd to top-level apispace directory, then type</p> 
+<p>In Terminal, clone repository and cd to top-level apispace directory, then enter</p> 
 <p><code>pip install apispace</code></p> 
-<p>into Terminal</p> 
 <h3> <a id="set-or-load-config-file" class="anchor" href="#set-or-load-config-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set or load <code>config</code> file</h3> 
 <p>To enter login settings into the console:</p> 
 <pre><code>&gt;&gt;&gt; import apispace
@@ -746,8 +746,9 @@ Please enter path to input CSV: /Users/username/Desktop/updated_enum_positions.c
 <p>This submodule includes a variety of functions which create, update, and delete descriptive records and subrecords.</p> 
 <p>Use <code>template</code> functions to download CSV templates for use with <code>description</code> functions</p> 
 <h4> <a id="create-descriptive-records" class="anchor" href="#create-descriptive-records" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create Descriptive Records</h4> 
-<p>description.**create_records(jsonmodel_type, **subrecords)</p> 
-<p>Creates one or more records of any type, with any number of subrecord fields.</p> 
+<p>description.**create_records(jsonmodel_type, <strong>subrecords)</strong></p> 
+<p>Creates one or more records of any type, with any number of record and subrecord fields. This function pulls in data from the ArchivesSpace schema via a request to the API. Gien the record type and any subrecords as arguments, it matches the record type, the properties of each record type, and any subrecord fields with the data in the schema, and then constructs a JSON object based on the column headers of the input CSV.</p> 
+<p>This function enables users to create any kind of record, with any number of fields, using a single function. Because the schema is pulled in from the API, users will be able to utilize the schema which corresponds to their version of ArchivesSpace.</p> 
 <p>description.<strong>repositories()</strong></p> 
 <p>Creates one or more minimally-populated repository records using <em>repositories.csv</em> as input.</p> 
 <p>To use, do the following:</p> 

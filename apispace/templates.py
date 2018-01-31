@@ -18,22 +18,25 @@ def write_config():
     file.write(str(config_json))
     print('All Done!')
 
+#Templates for record creation. Could also be used for updating records. How to indicate which are required?
 def templates():
+    #make sure values match JSON values
     all_templates = {'repository': ['repo_name', 'repo_code'],
-                 'accession': ['repo_uri', 'title', 'identifier', 'accession_date'],
-                 'resource': ['repo_uri', 'identifier', 'title', 'language', 'level', 'begin_date', 'end_date', 'date_type',
+                 'accession': ['repo_uri', 'title', 'identifier', 'accession_date', 'inventory', 'disposition', 'display_string',
+                               'general_note', 'provenance', 'publish', 'acquisition_type', 'access_restrictions'],
+                 'resource': ['repo_uri', 'id_0', 'title', 'language', 'level', 'begin', 'end', 'date_type',
                               'date_label', 'extent_type', 'extent_portion', 'extent_number', 'container_summary'],
                  'archival_object': ['resource_uri', 'repo_uri', 'title', 'level', 'parent_series_uri', 'component_id'],
                  'digital_object': ['repo_uri', 'digital_object_id', 'title'],
                  'digital_object_component': ['repo_uri', 'parent_uri', 'component_id', 'title'],
-                 'date': ['record_uri', 'begin_date', 'end_date', 'expression', 'date_type', 'label'],
-                 'extent': ['record_uri', 'container_summary', 'extent_type', 'number', 'portion'],
-                 'external_document': [],
-                 'external_id': [],
+                 'date': ['record_uri', 'begin', 'end', 'expression', 'date_type', 'label'],
+                 'extent': ['record_uri', 'container_summary', 'extent_type', 'number', 'portion', 'dimensions', 'physical_details'],
+                 'external_document': ['record_uri'],
+                 'external_id': ['record_uri'],
                  'file_version': ['record_uri', 'file_uri', 'identifier'],
-                 'instance': [],
-                 'top_container': [],
-                 'sub_container': [],
+                 'instance': ['record_uri'],
+                 'top_container': ['record_uri'],
+                 'sub_container': ['top_container_uri'],
                  'container_profile': [],
                  'location': [],
                  'location_profile': [], 

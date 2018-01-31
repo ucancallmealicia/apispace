@@ -31,20 +31,14 @@ def link_agent():
         print(description_post)
 
 def create_names():
-    print('placeholder')
+    return
         
 def get_agents():
-    print('placeholder')
-#    cursor = admin.login_db()
+    return
 
-# def create_subject():
-#     values = admin.login()
-#     csvfile = admin.opencsv()
-#     for row in csvfile:
+def create_subject():
+    return
 
-#def update_subject():
-
-#this could work for other modules; but tricky if there are, say, multiple dates
 def update_subject_component():
     values = admin.login()
     csvfile = admin.opencsv()
@@ -58,11 +52,8 @@ def update_subject_component():
         subject_update = requests.post(values[0] + subject_uri, headers=values[1], data=subject_data).json()
         print(subject_update)        
         
-#def link_to_resource():
+def link_to_record():
+    return
     
-#def link_to_ao():
-    
-#def delete_subject():
-
-#def get_subjects():
-#    cursor = admin.login_db()
+def delete_auth_record():
+    return
