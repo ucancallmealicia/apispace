@@ -1,0 +1,868 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>/Users/aliciadetelich/Dropbox/apispace/.README.md.html</title>
+
+
+<style type="text/css">
+body {
+	color: #333;
+	font: 13px/1.4 "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	background: transparent;
+	color: #4183c4;
+	text-decoration: none;
+}
+
+a:active,
+a:hover {
+	outline: 0 none;
+	text-decoration: underline;
+}
+
+abbr[title] {
+	border-bottom: 1px dotted;
+}
+
+b,
+strong {
+	font-weight: bold;
+}
+
+dfn {
+	font-style: italic;
+}
+h1 {
+	font-size: 2em;
+	margin: 0.67em 0;
+}
+mark {
+	background: #ff0;
+	color: #000;
+}
+small {
+	font-size: 80%;
+}
+sub, sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+sup {
+	top: -0.5em;
+}
+sub {
+	bottom: -0.25em;
+}
+img {
+	border: 0 none;
+}
+svg:not(:root) {
+	overflow: hidden;
+}
+figure {
+	margin: 1em 40px;
+}
+hr {
+	box-sizing: content-box;
+	height: 0;
+}
+
+code,
+kbd,
+pre,
+samp {
+	font-family: monospace,monospace;
+	font-size: 1em;
+}
+
+pre {
+	overflow: auto;
+	font: 12px Consolas,"Liberation Mono",Menlo,Courier,monospace;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+.markdown-body {
+	padding: 30px;
+	font-size: 16px;
+	line-height: 1.6;
+	word-wrap: break-word;
+}
+
+.markdown-body>*:first-child {
+	margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+	margin-bottom: 0 !important;
+}
+
+.markdown-body .absent {
+	color: #c00;
+}
+
+.markdown-body .anchor {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	display: block;
+	padding-right: 6px;
+	padding-left: 30px;
+	margin-left: -30px;
+}
+
+.markdown-body .anchor:focus {
+	outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+	position: relative;
+	margin-top: 1em;
+	margin-bottom: 16px;
+	font-weight: bold;
+	line-height: 1.4;
+}
+
+.markdown-body h1 .octicon-link,
+.markdown-body h2 .octicon-link,
+.markdown-body h3 .octicon-link,
+.markdown-body h4 .octicon-link,
+.markdown-body h5 .octicon-link,
+.markdown-body h6 .octicon-link {
+	display: none;
+	color: #000;
+	vertical-align: middle;
+}
+
+.markdown-body h1:hover .anchor,
+.markdown-body h2:hover .anchor,
+.markdown-body h3:hover .anchor,
+.markdown-body h4:hover .anchor,
+.markdown-body h5:hover .anchor,
+.markdown-body h6:hover .anchor {
+	padding-left: 8px;
+	margin-left: -30px;
+	line-height: 1;
+	text-decoration: none;
+}
+
+.markdown-body h1:hover .anchor .octicon-link,
+.markdown-body h2:hover .anchor .octicon-link,
+.markdown-body h3:hover .anchor .octicon-link,
+.markdown-body h4:hover .anchor .octicon-link,
+.markdown-body h5:hover .anchor .octicon-link,
+.markdown-body h6:hover .anchor .octicon-link {
+	display: inline-block;
+}
+
+.markdown-body h1 tt,
+.markdown-body h1 code,
+.markdown-body h2 tt,
+.markdown-body h2 code,
+.markdown-body h3 tt,
+.markdown-body h3 code,
+.markdown-body h4 tt,
+.markdown-body h4 code,
+.markdown-body h5 tt,
+.markdown-body h5 code,
+.markdown-body h6 tt,
+.markdown-body h6 code {
+	font-size: inherit;
+}
+
+.markdown-body h1 {
+	padding-bottom: 0.3em;
+	font-size: 2.25em;
+	line-height: 1.2;
+	border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+	padding-bottom: 0.3em;
+	font-size: 1.75em;
+	line-height: 1.225;
+	border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+	font-size: 1.5em;
+	line-height: 1.43;
+}
+
+.markdown-body h4 {
+	font-size: 1.25em;
+}
+
+.markdown-body h5 {
+	font-size: 1em;
+}
+
+.markdown-body h6 {
+	font-size: 1em;
+	color: #777;
+}
+
+.markdown-body p,.markdown-body blockquote,
+.markdown-body ul,.markdown-body ol,
+.markdown-body dl,.markdown-body table,
+.markdown-body pre {
+	margin-top: 0;
+	margin-bottom: 16px;
+}
+
+.markdown-body hr {
+	height: 4px;
+	padding: 0;
+	margin: 16px 0;
+	background-color: #e7e7e7;
+	border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+	padding-left: 2em;
+}
+
+.markdown-body ul.no-list,
+.markdown-body ol.no-list {
+	padding: 0;
+	list-style-type: none;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.markdown-body li>p {
+	margin-top: 16px;
+}
+
+.markdown-body dl {
+	padding: 0;
+}
+
+.markdown-body dl dt {
+	padding: 0;
+	margin-top: 16px;
+	font-size: 1em;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.markdown-body dl dd {
+	padding: 0 16px;
+	margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+	padding: 0 15px;
+	color: #777;
+	border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+	margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+	margin-bottom: 0;
+}
+
+.markdown-body table {
+	display: block;
+	width: 100%;
+	overflow: auto;
+	word-break: normal;
+	word-break: keep-all;
+}
+
+.markdown-body table th {
+	font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+	padding: 6px 13px;
+	border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+	background-color: #fff;
+	border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+	background-color: #f8f8f8;
+}
+
+.markdown-body img {
+	max-width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.markdown-body span.frame {
+	display: block;
+	overflow: hidden;
+}
+
+.markdown-body span.frame>span {
+	display: block;
+	float: left;
+	width: auto;
+	padding: 7px;
+	margin: 13px 0 0;
+	overflow: hidden;
+	border: 1px solid #ddd;
+}
+
+.markdown-body span.frame span img {
+	display: block;
+	float: left;
+}
+
+.markdown-body span.frame span span {
+	display: block;
+	padding: 5px 0 0;
+	clear: both;
+	color: #333;
+}
+
+.markdown-body span.align-center {
+	display: block;
+	overflow: hidden;
+	clear: both;
+}
+
+.markdown-body span.align-center>span {
+	display: block;
+	margin: 13px auto 0;
+	overflow: hidden;
+	text-align: center;
+}
+
+.markdown-body span.align-center span img {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.markdown-body span.align-right {
+	display: block;
+	overflow: hidden;
+	clear: both;
+}
+
+.markdown-body span.align-right>span {
+	display: block;
+	margin: 13px 0 0;
+	overflow: hidden;
+	text-align: right;
+}
+
+.markdown-body span.align-right span img {
+	margin: 0;
+	text-align: right;
+}
+
+.markdown-body span.float-left {
+	display: block;
+	float: left;
+	margin-right: 13px;
+	overflow: hidden;
+}
+
+.markdown-body span.float-left span {
+	margin: 13px 0 0;
+}
+
+.markdown-body span.float-right {
+	display: block;
+	float: right;
+	margin-left: 13px;
+	overflow: hidden;
+}
+
+.markdown-body span.float-right>span {
+	display: block;
+	margin: 13px auto 0;
+	overflow: hidden;
+	text-align: right;
+}
+
+.markdown-body code,.markdown-body tt {
+	padding: 0;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	margin: 0;
+	font-size: 85%;
+	background-color: rgba(0,0,0,0.04);
+	border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after,
+.markdown-body tt:before,
+.markdown-body tt:after {
+	letter-spacing: -0.2em;
+	content: "\00a0";
+}
+
+.markdown-body code br,
+.markdown-body tt br {
+	display: none;
+}
+
+.markdown-body del code {
+	text-decoration: inherit;
+}
+
+.markdown-body pre>code {
+	padding: 0;
+	margin: 0;
+	font-size: 100%;
+	word-break: normal;
+	white-space: pre;
+	background: transparent;
+	border: 0;
+}
+
+.markdown-body .highlight {
+	margin-bottom: 16px;
+}
+
+.markdown-body .highlight pre,
+.markdown-body pre {
+	padding: 16px;
+	overflow: auto;
+	font-size: 85%;
+	line-height: 1.45;
+	background-color: #f7f7f7;
+	border-radius: 3px;
+}
+
+.markdown-body .highlight pre {
+	margin-bottom: 0;
+	word-break: normal;
+}
+
+.markdown-body pre {
+	word-wrap: normal;
+}
+
+.markdown-body pre code,
+.markdown-body pre tt {
+	display: inline;
+	max-width: initial;
+	padding: 0;
+	margin: 0;
+	overflow: initial;
+	line-height: inherit;
+	word-wrap: normal;
+	background-color: transparent;
+	border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after,
+.markdown-body pre tt:before,
+.markdown-body pre tt:after {
+	content: normal;
+}
+
+.highlight .pl-coc,
+.highlight .pl-entl,
+.highlight .pl-entm,
+.highlight .pl-eoa,
+.highlight .pl-mai .pl-sf,
+.highlight .pl-mm,
+.highlight .pl-pdv,
+.highlight .pl-sc,
+.highlight .pl-som,
+.highlight .pl-sr,
+.highlight .pl-v,
+.highlight .pl-vpf {
+	color: #0086b3;
+}
+.highlight .pl-eoac,
+.highlight .pl-mdht,
+.highlight .pl-mi1,
+.highlight .pl-mri,
+.highlight .pl-va,
+.highlight .pl-vpu {
+	color: #008080;
+}
+.highlight .pl-c,
+.highlight .pl-pdc {
+	color: #b4b7b4;
+	font-style: italic;
+}
+.highlight .pl-k,
+.highlight .pl-ko,
+.highlight .pl-kolp,
+.highlight .pl-mc,
+.highlight .pl-mr,
+.highlight .pl-ms,
+.highlight .pl-s,
+.highlight .pl-sok,
+.highlight .pl-st {
+	color: #6e5494;
+}
+.highlight .pl-ef,
+.highlight .pl-enf,
+.highlight .pl-enm,
+.highlight .pl-entc,
+.highlight .pl-eoi,
+.highlight .pl-sf,
+.highlight .pl-smc {
+	color: #d12089;
+}
+.highlight .pl-ens,
+.highlight .pl-eoai,
+.highlight .pl-kos,
+.highlight .pl-mh .pl-pdh,
+.highlight .pl-mp,
+.highlight .pl-pde,
+.highlight .pl-stp {
+	color: #458;
+}
+.highlight .pl-enti {
+	color: #d12089;
+	font-weight: bold;
+}
+.highlight .pl-cce,
+.highlight .pl-enc,
+.highlight .pl-kou,
+.highlight .pl-mq {
+	color: #f93;
+}
+.highlight .pl-mp1 .pl-sf {
+	color: #458;
+	font-weight: bold;
+}
+.highlight .pl-cos,
+.highlight .pl-ent,
+.highlight .pl-md,
+.highlight .pl-mdhf,
+.highlight .pl-ml,
+.highlight .pl-pdc1,
+.highlight .pl-pds,
+.highlight .pl-s1,
+.highlight .pl-scp,
+.highlight .pl-sol {
+	color: #df5000;
+}
+.highlight .pl-c1,
+.highlight .pl-cn,
+.highlight .pl-pse,
+.highlight .pl-pse .pl-s2,
+.highlight .pl-vi {
+	color: #a31515;
+}
+.highlight .pl-mb,
+.highlight .pl-pdb {
+	color: #df5000;
+	font-weight: bold;
+}
+.highlight .pl-mi,
+.highlight .pl-pdi {
+	color: #6e5494;
+	font-style: italic;
+}
+.highlight .pl-ms1 {
+	background-color: #f5f5f5;
+}
+.highlight .pl-mdh,
+.highlight .pl-mdi {
+	font-weight: bold;
+}
+.highlight .pl-mdr {
+	color: #0086b3;
+	font-weight: bold;
+}
+.highlight .pl-s2 {
+	color: #333;
+}
+.highlight .pl-ii {
+	background-color: #df5000;
+	color: #fff;
+}
+.highlight .pl-ib {
+	background-color: #f93;
+}
+.highlight .pl-id {
+	background-color: #a31515;
+	color: #fff;
+}
+.highlight .pl-iu {
+	background-color: #b4b7b4;
+}
+.highlight .pl-mo {
+	color: #969896;
+}
+
+</style>
+
+
+<script type="text/javascript">
+
+function getDocumentScrollTop() 
+{
+   var res = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset || 0;
+   // alert(res);
+   return res;
+}
+
+function setDocumentScrollTop(ypos) 
+{
+	window.scrollTo(0, ypos);
+}
+
+</script>
+
+
+</head>
+<body class="markdown-body">
+<h1> <a id="apispace" class="anchor" href="#apispace" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>apispace</h1> 
+<p>A beta/hyper-prototypical/incomplete/work-in-progress Python package that uses CSVs to interact with the ArchivesSpace API.</p> 
+<h3> <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h3> 
+<ul> 
+ <li>Python 3.4+</li> 
+ <li> <code>requests</code> module</li> 
+ <li> <code>pymysql</code> module</li> 
+ <li>Access to ArchivesSpace API</li> 
+ <li>Access to ArchivesSpace Database</li> 
+</ul> 
+<h3> <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3> 
+<p>clone repository and cd to top-level apispace directory, then type</p> 
+<p><code>pip install apispace</code></p> 
+<p>into Terminal</p> 
+<h3> <a id="set-or-load-config-file" class="anchor" href="#set-or-load-config-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set or load <code>config</code> file</h3> 
+<p>To enter login settings into the console:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; config.api_settings(url, username, password, nickname)
+&gt;&gt;&gt; print(api_url)
+url
+&gt;&gt;&gt; config.db_settings(name, host, port, un, pw)
+&gt;&gt;&gt; print(db_name)
+name
+</code></pre> 
+<p>To download a configuration JSON file template:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; templates.write_config()
+Please enter path to output folder: 
+&gt;&gt;&gt; All Done!
+</code></pre> 
+<p>To load a configuration JSON file:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; config.loadconfig()
+Please enter the path to your config file: /Users/user/Desktop/confix.json
+&gt;&gt;&gt; Thank you, config file is loaded.
+</code></pre> 
+<p>All functions will work without entering credentials, but users must enter credentials each time a function is called.</p> 
+<p>To clear login settings, run:</p> 
+<pre><code>&gt;&gt;&gt; config.clear_settings(api)
+&gt;&gt;&gt; print(password)
+
+&gt;&gt;&gt; config.clear_settings(db)
+&gt;&gt;&gt; print(db_name)
+
+&gt;&gt;&gt;
+</code></pre> 
+<h3> <a id="templates" class="anchor" href="#templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Templates</h3> 
+<p>A variety of CSV templates are available for use with <code>apispace</code> functions. To download all templates, do:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; templates.download_templates()
+&gt;&gt;&gt; Please enter path to output folder: Users/username/Desktop/templates
+&gt;&gt;&gt;
+</code></pre> 
+<p>To download a single template, do:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; templates.download_template('accessions')
+&gt;&gt;&gt; Please enter path to output folder: Users/username/Desktop/templates
+&gt;&gt;&gt;
+</code></pre> 
+<p>Users may find it beneficial to create a separate directory to store template files.</p> 
+<h3> <a id="administrative-functions" class="anchor" href="#administrative-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Administrative Functions</h3> 
+<p>This submodule includes basic login and file handling functions. It also includes a few basic ArchivesSpace functions, including functions to retrieve and update set default values and to update enumeration value positions.</p> 
+<p>admin.<strong>login()</strong></p> 
+<p>Log in to the ArchivesSpace API. Uses optional <code>config</code> file to retrieve login information. See instructions above to set up <code>config</code> file.</p> 
+<p>To log in and perform a test GET request, try the following:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; values = admin.login()
+Login successful! Connected to ArchivesSpace TEST
+&gt;&gt;&gt; example = requests.get(values[0] + '/repositories, headers=values[1]).json()
+&gt;&gt;&gt; print(example)
+[List of repositories]
+</code></pre> 
+<p>If the config file is not set, a call to the login function will prompt the user for credentials.</p> 
+<p>admin.<strong>login_db()</strong></p> 
+<p>Log in to the ArchivesSpace database. Uses optional <code>config</code> file to retrieve login information. See instructions above to set up <code>config</code> file.</p> 
+<p>If the config file is not set, a call to the login_db function will prompt the user for credentials.</p> 
+<p>admin.<strong>opencsv()</strong></p> 
+<p>Opens an input CSV file. This function is called in nearly every other function in this package.</p> 
+<p>admin.<strong>opencsvdict()</strong></p> 
+<p>Opens an input CSV file in DictReader mode. This function is used in functions which allow for variable numbers of record updates.</p> 
+<p>admin.<strong>opencsvout()</strong></p> 
+<p>Open an output CSV file. This function is used in other functions to store output data.</p> 
+<p>admin.<strong>opentxt()</strong></p> 
+<p>Open an output text file. This function is used in other functions to store log data.</p> 
+<p>admin.<strong>writetxt(f, j)</strong></p> 
+<p>Write to an output text file. This function is used in other functions to store JSON data for individual records.</p> 
+<p>admin.<strong>writealltxt(f, j)</strong></p> 
+<p>Write to an output text file. This function is used in other functions to store JSON data for a batch of records.</p> 
+<p>admin.<strong>setdefaultvalues()</strong></p> 
+<p>admin.<strong>update_enum_val_positions()</strong></p> 
+<p>Updates the position of enumeration values, using a CSV as input. To use the CSV output from <code>getdata.get_enumerations(enumeration)</code> as input for this function, simply change the position values to whatever is desired.</p> 
+<p>To use, do the following:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; admin.update_enum_val_positions()
+Login Successful! Connected to ArchivesSpace TEST
+Please enter path to input CSV: /Users/username/Desktop/updated_enum_positions.csv
+&lt;Enumeration_Value xxxxx&gt;
+&lt;Enumeration_Value xxxxx&gt;
+&gt;&gt;&gt; 
+</code></pre> 
+<h3> <a id="schema-module" class="anchor" href="#schema-module" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Schema Module</h3> 
+<p>This submodule takes the JSONModel schemas for ArchivesSpace and manipulates them into a format in which they can be easily accessed by the description functions in this module. The goal is to abstract the description functions - especially the record creation functions - as much as possible, and to pull in data directly from the schema.</p> 
+<p>This portion of the module is not fully fleshed out yet, so other functions in the description submodule for record creation are still available.</p> 
+<h3> <a id="description-functions" class="anchor" href="#description-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description Functions</h3> 
+<p>This submodule includes a variety of functions which create, update, and delete descriptive records and subrecords.</p> 
+<p>Use <code>template</code> functions to download CSV templates for use with <code>description</code> functions</p> 
+<h4> <a id="create-descriptive-records" class="anchor" href="#create-descriptive-records" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create Descriptive Records</h4> 
+<p>description.**create_records(jsonmodel_type, **subrecords)</p> 
+<p>Creates one or more records of any type, with any number of subrecord fields.</p> 
+<p>description.<strong>repositories()</strong></p> 
+<p>Creates one or more minimally-populated repository records using <em>repositories.csv</em> as input.</p> 
+<p>To use, do the following:</p> 
+<p>Complete repositories.csv template, i.e.:</p> 
+<table> 
+ <thead> 
+  <tr> 
+   <th>repo_name</th> 
+   <th>repo_code</th> 
+  </tr> 
+ </thead> 
+ <tbody> 
+  <tr> 
+   <td>Manuscripts and Archives</td> 
+   <td>mssa</td> 
+  </tr> 
+  <tr> 
+   <td>Arts Library</td> 
+   <td>arts</td> 
+  </tr> 
+  <tr> 
+   <td>Medical Library</td> 
+   <td>med</td> 
+  </tr> 
+ </tbody> 
+</table> 
+<p>Run repositories() function:</p> 
+<pre><code>&gt;&gt;&gt; import apispace
+&gt;&gt;&gt; description.repositories()
+Login Successful! Connected to ArchivesSpace TEST
+Please enter path to input CSV: /Users/username/Desktop/repositories.csv
+{Status: Updated...}
+{Status: Updated...}
+{Status: Updated...}
+</code></pre> 
+<p>description.<strong>accessions()</strong><br /> Creates one or more minimally-populated repository record using <em>accessions.csv</em> as input.</p> 
+<p>description.<strong>resources()</strong><br /> Creates one or more minimally-populated resource records using <em>resources.csv</em> as input</p> 
+<p>description.<strong>archival_objects()</strong><br /> Creates one or more minimally-populated archival object records using <em>archival_objects.csv</em> as input</p> 
+<p>description.<strong>digital_objects()</strong><br /> Creates one or more minimally-populated digital object records using <em>digital_objects.csv</em> as input</p> 
+<p>description.<strong>dig_object_components()</strong><br /> Creates one or more minimally-populated digital object records using <em>dig_obj_components.csv</em> as input</p> 
+<p>description.<strong>dates()</strong><br /> Creates dates to be added to existing descriptive records, using <em>dates.csv</em> as input</p> 
+<p>description.<strong>extents()</strong><br /> Creates extents to be added to existing descriptive records, using <em>extents.csv</em> as input</p> 
+<p>description.<strong>external_docs()</strong><br /> Creates external documents to be added to existing descriptive records, using <em>external_docs.csv</em> as input</p> 
+<p>description.<strong>external_ids()</strong><br /> Creates external IDs to be added to existing descriptive records, using <em>external_ids.csv</em> as input</p> 
+<p>description.<strong>file_versions()</strong><br /> Creates file versions to be added to existing descriptive records, using <em>file_versions.csv</em> as input</p> 
+<p>description.<strong>revision_statements()</strong><br /> Creates finding aid revision statements to be added to existing descriptive records, using <em>revision_statements.csv</em> as input</p> 
+<p>description.<strong>singlepart_notes()</strong><br /> Creates singlepart notes to be added to existing descriptive records, using a CSV as input</p> 
+<p>description.<strong>multipart_notes()</strong><br /> Creates multipart notes to be added to existing descriptive records, using a CSV as input</p> 
+<p>description.<strong>rights_restrictions()</strong><br /> Creates rights restrictions to be added to existing conditions governing access or conditions governing use notes, using a CSV as input</p> 
+<p>description.<strong>note_bioghist()</strong><br /> Creates a biographical history note to be added to an existing descriptive record, using a CSV as input</p> 
+<p>description.<strong>note_abstract()</strong><br /> Creates an abstract note to be added to an existing descriptive record, using a CSV as input</p> 
+<p>description.<strong>note_bibliography()</strong><br /> Creates a bibliography to be added to an existing descriptive record, using a CSV as input</p> 
+<h4> <a id="update-descriptive-records" class="anchor" href="#update-descriptive-records" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Update Descriptive Records</h4> 
+<p>description.<strong>update_record_component()</strong><br /> Updates any single top-level (string) record component, using a CSV as input</p> 
+<p>description.<strong>update_record_components(**args)</strong><br /> Updates one or more top-level record components, using a CSV as input</p> 
+<p>description.<strong>update_record_pub_status()</strong><br /> Updates the publication status of one or more descriptive records, using a CSV as input</p> 
+<p>description.<strong>update_subrecord_component()</strong><br /> Updates any single sub-record (module) component, using a CSV as input</p> 
+<p>description.<strong>update_subrecord_components(**args)</strong><br /> Updates one or more sub-record (module) components, using a CSV as input</p> 
+<p>description.<strong>update_note_component()</strong><br /> Update any single note component, using a CSV as input</p> 
+<p>description.<strong>update_note_components(**args)</strong> - <strong><em>NOT YET WRITTEN</em></strong><br /> Update one or more note components, using a CSV as input</p> 
+<p>description.<strong>update_note_pub_status()</strong><br /> Update the publication status of one or more notes, using a CSV as input</p> 
+<p>description.<strong>replace_note_by_id()</strong><br /> Replace the text of an existing note using its persistent ID</p> 
+<h4> <a id="delete-descriptive-records" class="anchor" href="#delete-descriptive-records" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Delete Descriptive Records</h4> 
+<p>description.<strong>delete_notes()</strong><br /> Delete one or more notes</p> 
+<p>description.<strong>delete_subrecords()</strong><br /> Delete one or more subrecords (modules) from a descriptive record</p> 
+<p>description.<strong>delete_subrecord_components()</strong><br /> Delete a given number of components from a subrecord</p> 
+<p>description.<strong>delete_do_instance()</strong><br /> Delete a digital object instance. NOTE: Always delete a digital object instance before deleting the digital object itself.</p> 
+<p>description.<strong>delete_records()</strong><br /> Delete one or more descriptive records.</p> 
+<h3> <a id="classification-functions" class="anchor" href="#classification-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Classification Functions</h3> 
+<p>classification.<strong>create_top_level()</strong></p> 
+<p>classification.<strong>create_sub_level()</strong></p> 
+<p>classification.<strong>create_sub_sub_level()</strong></p> 
+<p>classification.<strong>link_records()</strong></p> 
+<p>classification.<strong>get_class_uris()</strong></p> 
+<p>classification.<strong>get_class_rec_links()</strong></p> 
+<h3> <a id="authority-functions" class="anchor" href="#authority-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authority Functions</h3> 
+<h4> <a id="agents" class="anchor" href="#agents" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Agents</h4> 
+<p>agent.<strong>create_agent()</strong><br /> Create one or more agent records using a CSV as input</p> 
+<p>agent.<strong>update_agent_component()</strong> - <strong><em>NOT YET WRITTEN</em></strong></p> 
+<p>agent.<strong>update_agent_components()</strong> - <strong><em>NOT YET WRITTEN</em></strong></p> 
+<p>agent.<strong>link_agent()</strong><br /> Link one or more agent records to existing descriptive records, using a CSV as input</p> 
+<p>agent.<strong>merge_agents()</strong> = <strong><em>NOT YET WRITTEN</em></strong></p> 
+<h4> <a id="subjects" class="anchor" href="#subjects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Subjects</h4> 
+<p>subject.<strong>create_subject()</strong><br /> Create one or more subjects using a CSV as input</p> 
+<p>subject.<strong>update_subject_component()</strong></p> 
+<p>subject.<strong>update_subject_components()</strong></p> 
+<p>subject.<strong>link_subject()</strong> - <strong><em>NOT YET WRITTEN</em></strong></p> 
+<p>subject.<strong>delete_subject()</strong> - <strong><em>NOT YET WRITTEN</em></strong></p> 
+<h3> <a id="physical-control-functions" class="anchor" href="#physical-control-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Physical Control Functions</h3> 
+<h4> <a id="containers" class="anchor" href="#containers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Containers</h4> 
+<p>container.<strong>create_top_container()</strong><br /> Creates one or more top containers using a CSV as input</p> 
+<p>container.<strong>update_tc_components()</strong></p> 
+<p>container.<strong>create_instances()</strong><br /> Links top containers to descriptive records, using a CSV as input</p> 
+<p>container.<strong>create_do_instances()</strong></p> 
+<p>container.<strong>update_sc_components()</strong><br /> Updates subcontainer types and indicators, using a CSV as input. Ideal for making batch updates/corrections to folder numbers</p> 
+<p>container.<strong>create_container_profiles()</strong><br /> Creates container profiles using a CSV as input</p> 
+<h4> <a id="locations" class="anchor" href="#locations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Locations</h4> 
+<p>location.<strong>create_location()</strong><br /> Creates one or more locations using a CSV as input</p> 
+<p>location.<strong>update_location(**args)</strong><br /> Updates a given number of location components using a CSV as imput</p> 
+<p>event.<strong>create_event()</strong></p> 
+<h3> <a id="reference-functions" class="anchor" href="#reference-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reference Functions</h3> 
+<p>schema.<strong>schema()</strong><br /> Prints the ArchivesSpace schema</p> 
+<p><code>datatypes</code> submodule</p> 
+<h3> <a id="retrieving-data" class="anchor" href="#retrieving-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Retrieving Data</h3> 
+<p>getdata.<strong>get_enumerations()</strong></p> 
+<p>Database query to return the uri, name, and position of all enumeration values in a given enumeration.</p> 
+<p>getdata.<strong>get_repo_json()</strong></p> 
+<p>getdata.<strong>get_global_json()</strong></p> 
+<p>getdata.<strong>get_repo_ids()</strong></p> 
+<p>getdata.<strong>get_global_ids()</strong></p> 
+<p>getdata.<strong>get_note_ids()</strong></p> 
+<p>getdata.<strong>get_uris()</strong></p> 
+<p>getdata.<strong>extent_calculator()</strong> - <strong><em>NEED TO MOVE</em></strong></p> 
+<p>Retrieves calculated extent values for a list of resources, using a CSV of ArchivesSpace URIs as input</p> 
+<p>getdata.<strong>get_tree(repo, resource)</strong> - <strong><em>NEED TO MOVE</em></strong></p> 
+<p>Retrieves the record tree for a resource</p>
+</body>
+</html>
