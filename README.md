@@ -2,6 +2,9 @@
 
 A beta/hyper-prototypical/incomplete/work-in-progress Python package that uses CSVs to interact with the ArchivesSpace API.
 
+NOTE: Use at your own risk. Much of this is still unfinished, but the description functions have been tested. Further
+additions to the code and more documentation is coming soon.
+
 ### Requirements  
 - Python 3.4+
 - `requests` module
@@ -11,11 +14,9 @@ A beta/hyper-prototypical/incomplete/work-in-progress Python package that uses C
 
 ### Installation
 
-clone repository and cd to top-level apispace directory, then type 
+In Terminal, clone repository and cd to top-level apispace directory, then enter
 
 `pip install apispace`
-
-into Terminal
 
 ### Set or load `config` file
 
