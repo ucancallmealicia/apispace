@@ -1,7 +1,7 @@
 #/usr/bin/python3
 #~/anaconda3/bin/python
 
-import requests, json, csv #, subprocess
+import requests, json, csv, subprocess, os, re
 from apispace import admin
 
 global_record_types = ['agents/corporate_entities', 'agents/families', 'agents/people', 'agents/software', 'by-external-id', 'config/enumerations', 'container_profile',
@@ -56,6 +56,54 @@ def export_ead(repo_id, resource):
     output.write(str(get_ead))
     output.close()
 
+'''Takes a list of resource URIs, gets its EAD, and transforms it to Yale's BPG guidelines. Also need to add validation
+
+Note - URIs will have to be formatted like /repositories/12/resource_descriptions/resource_id.xml'''
+def etv_ead():
+    values = admin.login()
+    inputfile = admin.readtxt()
+    outputfile = admin.opentxt()
+    dirpath = admin.setdirectory()
+    print('Downloading EAD files to directory')
+    for ead_uri in inputfile:
+        get_ead = requests.get(values[0] + ead_uri + '.xml?include_unpublished=true', headers=values[1], stream=True).text
+        #Finds URLs with 2-digit repo ids
+        if re.search(r'[0-9]', ead_uri[15]):
+            outfile = admin.openxml(dirpath, ead_uri[39:].rstrip())
+            outfile.write(str(get_ead).rstrip())
+        #Others - assumes it's a 1-digit repo id. How many institutions will have more than 99 repositories?
+        else:
+            outfile = admin.openxml(dirpath, ead_uri[38:].rstrip())
+            outfile.write(str(get_ead).rstrip())
+    '''the subprocess call cannot take the EAD from AS directly as input. First need to save the file, and then run the 
+    transformation over each file'''
+    print('Done!')
+    print('Transforming EAD files to Yale Best Practices guidelines')
+    filelist = os.listdir(dirpath)
+    os.makedirs(dirpath + '/outfiles')
+    for file in filelist:
+        #finds all the EAD files in the working directory
+        if file[-3:] == 'xml':
+            #haven't changed the hard coding of the command or the xsl file yet
+            subprocess.run(["java", "-cp", "/usr/local/Cellar/saxon/9.8.0.4/libexec/saxon9he.jar", "net.sf.saxon.Transform", 
+                            "-s:" + dirpath + '/' + file, 
+                            "-xsl:" + dirpath + "/transformations/yale.aspace_v112_to_yalebpgs.xsl", 
+                            "-o:" + dirpath + '/outfiles/' + file[:-4] + "_out.xml"])
+    '''next we need to validate each output file against the EAD 2002 schema and the local Yale schematron'''
+    print('Done!')
+    print('Validating transformations against EAD 2002 and Schematron schemas')
+    newfilelist = os.listdir(dirpath + '/outfiles')
+    for outfile in newfilelist:
+        subprocess.Popen(["/Users/aliciadetelich/git/crux/target/crux-1.3-SNAPSHOT-all.jar", "-s", 
+                        dirpath + "/transformations/yale.aspace.ead2002.sch",
+                        dirpath + '/outfiles/' + outfile], stdout=outputfile, stderr=subprocess.PIPE, 
+                             encoding='utf-8')
+        subprocess.Popen(["/Users/aliciadetelich/git/crux/target/crux-1.3-SNAPSHOT-all.jar", 
+                              dirpath + '/outfiles/' + outfile], stdout=outputfile, stderr=subprocess.PIPE, 
+                             encoding='utf-8')
+    print('All Done! Check outfile for validation report')
+
+
 #Takes a list of resource IDs as input and outputs EAD
 #add subprocess option here for running transformations
 #Can do an ead3 option too
@@ -65,7 +113,7 @@ def export_eads(repo_id):
     dirpath = admin.setdirectory()
     for resource in infile:
         get_ead = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resource_descriptions/' + str(resource) + '.xml?include_unpublished=true', headers=values[1], stream=True).text
-        outfile = admin.opentxts(dirpath, resource)
+        outfile = admin.openxml(dirpath, resource)
         outfile.write(str(get_ead))
         outfile.close()
     input.close()
@@ -76,7 +124,7 @@ def export_all_ead(repo_id):
     get_ids = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resources?all_ids=true', headers=values[1]).json()
     for resource in get_ids:
         get_ead = requests.get(values[0] + '/repositories/' + str(repo_id) + '/resource_descriptions/' + str(resource) + '.xml?include_unpublished=true', headers=values[1], stream=True).text
-        outfile = admin.opentxts(dirpath, resource)
+        outfile = admin.openxml(dirpath, resource)
         outfile.write(str(get_ead))
         outfile.close()
 

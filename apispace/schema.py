@@ -6266,16 +6266,19 @@ def schemas():
                     'version': 1}}
     return(schema)
 
+''' Pulls in the ArchivesSpace schema from the API '''
 def get_new_schemas():
     values = admin.login()
     get_schemas = requests.get(values[0] + '/schemas', headers=values[1]).json()
     return(get_schemas)
 
+''' Pulls in a particular ArchivesSpace schema from the API '''
 def get_new_schema(schema):
     values = admin.login()
     get_schema = requests.get(values[0] + '/schemas/' + str(schema), headers=values[1]).json()
     return(get_schema)
 
+''' This function links up notes with the top-level records to which they apply'''
 #Can I add this to the schema_to_dict so I only have to call schema once?
 def parse_notes():
     #loads in the schema
@@ -6291,6 +6294,15 @@ def parse_notes():
             if k == 'properties':
                 #loops through the value of the properties key, which is also a dict
                 for kk, vv in v.items():
+                    if kk == 'subnotes':
+                        y = vv['items']['type']      
+                        for item in y:
+                            for v3 in item.values():
+                                v3 = re.sub(r'^JSONModel\(\:', '', v3)
+                                v3 = re.sub(r'\)\sobject', '', v3)
+                                #print('main_note: ' + str(key))
+                                #print('subnote: ' + str(v3))
+                                new_dict[key].append(v3)
                     #finds notes
                     if re.search(note, kk):
                         #finds the note type
@@ -6303,6 +6315,8 @@ def parse_notes():
                             for member in x:
                                 s = re.sub(r'^JSONModel\(\:', '', member['type'])
                                 s = re.sub(r'\)\sobject', '', s)
+                                #this creates the dict for each top_level record type which contains a list of the notes
+                                #which are applicable to each
                                 new_dict[key].append(s)
                     #finds names
                     if re.search(name, kk):
@@ -6320,8 +6334,7 @@ def parse_notes():
     #turns the default dict into an actual dict, with the top-level record type as the key and 
     #lists of the note and name types which apply to those top-level records as the values.
     new_dict = dict(new_dict)
-    #this goes ahead and turns the list into a dict using the list members as keys. This is also in a different
-    #function but it could belong here?
+    #this goes ahead and turns the list into a dict using the list members as keys.
     for key4, value4 in new_dict.items():
         value4 = dict.fromkeys(value4)
         new_dict[key4] = value4
@@ -6330,12 +6343,14 @@ def parse_notes():
     
 
 
-#parse JSON schema for use in record creation functions - everything but notes and names. 
+#parse JSON schema for use in record creation functions - everything but notes and names.
 def schema_to_dict():
     #load in the schema
     schema = get_new_schemas()
     #create dictionary to store data types and values
     schema_dict = {}
+    ref_list = []
+    weird_list = ['linked_agents', 'linked_events']
     #loop through top level of schema and retrieve top-level record name
     for key, value in schema.items():
         #loop through the dictionaries which are the values of the top-level keys
@@ -6351,145 +6366,163 @@ def schema_to_dict():
                 #feels weird to have this all here, but I think it should be since this is where I called the schema- I could do it
                 #again but that seems excessive
                 for k, v in subval.items():
-                    #was there anything besides this that was weird? 
-                    weird_list = ['linked_agents', 'linked_events']
-                    if k in weird_list:
-#                    if k == 'linked_agents':
-                        #print(v)
-                        for kkk, vvv in v.items():
+                    #print('property: ' + str(k))
+                    #print('values: ' + str(v))
+                    for kkk, vvv in v.items():
+                        if type(vvv) is dict:
+                            if 'properties' in vvv.keys():
+                                if k not in ref_list:
+                                    if k not in weird_list:
+                                        ref_list.append(k)
+                            elif 'ref' in vvv.keys():
+                                if k not in ref_list:
+                                    if k not in weird_list:
+                                        ref_list.append(k)
+                        if k in weird_list:
                             if kkk == 'items':
-                                #pprint.pprint(vvv)
                                 for kkkk, vvvv in vvv.items():
                                     if kkkk == 'properties':
-                                        #fuck there are also dynamic enums here.
+                                        new_dict = dict.fromkeys(vvvv.keys())
+                                        schema_dict[key][k] = new_dict
+                                        #may need this to add enums
                                         for k5, v5 in vvvv.items():
-                                            print(k5)
-                                            print(v5)
-                     
+                                            #print(k5)
+                                            #print(v5)
+                                            for k6 in v5.keys():
+                                                if k6 == 'dynamic_enum':
+                                                    #print(v5.get(k6))
+                                                    schema_dict[key][k][k5] = v5.get(k6)
+                    #could do a from keys if I want to add the actual enumerations
                     for kk, vv in v.items():
-                        if kk == 'enum':
-                            print('key1: ' + str(key))
-                            print('key2: ' + str(k))
-                            print('key3: ' + str(kk))
-                            print('value: ' + str(vv))
-                        if kk == 'dynamic_enum':
-                            print('key1: ' + str(key))
-                            print('key2: ' + str(k))
-                            print('key3: ' + str(kk))
-                            print('value: ' + str(vv))
+                        if 'enum' in kk:
+                            schema_dict[key][k] = vv
     #pprint.pprint(schema_dict)
-    return(schema_dict)
+    #print(ref_list)
+    return(schema_dict, ref_list)
 
 #This adds the first round of subrecord values to the top-level record type schema
 #Works recursively
+#the reason the ref list doesn't work is because this overrides it...
 def parse_schema():
     #stores the schema dictionary in a variable
     schema_d = schema_to_dict()
     #pulls in the result of the note stuff and stores in a variable
     notes_parsed = parse_notes()
+    weird_list = ['location', 'enumeration']
     #create an empty dictionary to store parsed schema
     valuedict = {}
     #loops through the top level of the schema dictionary and adds the keys and values to the empty dictionary
-    for key, val in schema_d.items():
+    for key, val in schema_d[0].items():
         valuedict[key] = val
     #loops through each key (JSONModel schema) and each value list (the list of properties for the key)
-    for k, value_d in schema_d.items():
+    for k, value_d in schema_d[0].items():
         #loops through each property in the valuelist looking for subrecords
         for k2 in value_d.keys():
-            #should I have a ref list here? check to see what other properties have refs at this level
-            if k2 == 'uri':
-                value_d[k2] = {'ref': None}
-            if k2 in schema_d.keys():
-                #See what other properties I'll need to add this for, then put them 
-                #think I need to leave out things that are also not refs (container profile,
-                #digital object, location, top container, etc.), and add them in the add subrecords function.
-                #nvm this won't work becaue only the repo would be in the schema keys
-                ref_list = ['repository']
-                if k2 in ref_list:
-                    valuedict[k][k2] = {'ref': None}
-                else:
-#                    newdict = dict.fromkeys(schema_d.get(member))
-                    valuedict[k][k2] = schema_d.get(k2)
+            if k2 in schema_d[0].keys():
+                if k2 not in weird_list:
+                    valuedict[k][k2] = schema_d[0].get(k2)
 #           deals with silly plural nonsense - dates, extents, etc.
-            elif k2[:-1] in schema_d.keys():
+            elif k2[:-1] in schema_d[0].keys():
 #                newdict = dict.fromkeys(schema_d.get(member[:-1]))
-                valuedict[k][k2] = schema_d.get(k2[:-1])
+                valuedict[k][k2] = schema_d[0].get(k2[:-1])
         #this deals with names and notes - could put in a different function?
         #loops through top level records with notes (k3), and the dictionaries which contain the
         #note types (v3)
         for k3, v3 in notes_parsed.items():
             note_dict = {}
             name_dict = {}
+            subnote_dict = {}
             #limits the schema to only the top-level records with notes or names
             if k3 == k:
-                #the value of the note dictionaries is a dictionary of note types; this loops throught the keys
-                for k4 in v3.keys():
-                    #if the note or name type is in the schema
-                    if k4 in schema_d.keys():
-                        #this is the note or name type. I want to find out if this
-                        if 'note' in k4:
-                            note_dict[k4] = schema_d.get(k4)
-                            #note_dict.update(schema_d.get(k4))
-                        elif 'name' in k4:
-                            name_dict[k4] = schema_d.get(k4)
-                            name_dict.update(schema_d.get(k4))
-                #need the value of 
-                if name_dict != {}:
-                    valuedict[k]['names'] = name_dict
-                if note_dict != {}:
-                    valuedict[k]['notes'] = note_dict
-    #pprint.pprint(valuedict['archival_object'])
+                if 'note' in k3:
+                    for k8 in v3.keys():
+                        subnote_dict[k8] = schema_d[0].get(k8)
+                    valuedict[k3]['subnotes'] = subnote_dict
+                else:
+                    #the value of the note dictionaries is a dictionary of note types; this loops throught the keys
+                    for k4 in v3.keys():
+                        #if the note or name type is in the schema
+                        if k4 in schema_d[0].keys():
+                            #print(schema_d.get(k4))
+                            #this is the note or name type. 
+                            if 'note' in k4:
+                                note_dict[k4] = schema_d[0].get(k4)
+                                #why did I take this out? Do I need it for the names?
+                                #note_dict.update(schema_d.get(k4))
+                            elif 'name' in k4:
+                                name_dict[k4] = schema_d[0].get(k4)
+                                name_dict.update(schema_d[0].get(k4))       
+                    if name_dict != {}:
+                        valuedict[k]['names'] = name_dict
+                    if note_dict != {}:
+                        valuedict[k]['notes'] = note_dict
+    #for k9, v9 in valuedict.items()
+    for value in valuedict.values():
+        for k5, v5 in value.items():
+            if k5 in schema_d[1]:
+                value[k5] = {'ref': None}
+            if type(v5) is dict:
+                for k6 in v5.keys():
+                    if k6 in schema_d[1]:
+                        v5[k6] = {'ref': None}
+    #pprint.pprint(valuedict)
     return(valuedict)
 
-#Now I may not need this who add subrecords thing, except to add refs andd add dynamic enum
-#'parent', 'ancestor', 'series',  - wont fix these
-def add_refs():
-    outfile = admin.opentxt()
-    schema_dict = parse_schema()
-    #make sure that the location for external docs is a ref.
-    #not sure if digital object should be in here...i think it's actually a true or false
-    #is vocab a ref? Need to check some of these
-    ref_list = ['location', 'classification', 'location_profile', 
-                'top_container', 'container_location', 'resource', 'subjects',
-                'digital_object', 'series', 'ancestors', 'parent']
-    #Loops through each value of the top level record types, which are dictionaries of properties
-    for value in schema_dict.values():
-        #loops through each key and value of the property list. The keys are properties and the values
-        #are often dictionaries of other properties- subrecords
-        for k, v in value.items():
-            #if that key is in the reference list
-            if k in ref_list:
-                #the value of the key becomes a reference
-                value[k] = {'ref': None}
-            if type(v) is dict:
-                for k2  in v.keys():
-                    if k2 in ref_list:
-                        v[k2] = {'ref': None}
-    writealltxt(outfile, schema_dict)
-    #pprint.pprint(schema_dict)
-    return(schema_dict)
+#Can't get all ids
+# def get_enums():
+#     values = admin.login()
+#     scheme = parse_schema()
+#     id_list = requests.get(values[0] + '/enumeration_values?all_ids=True', headers=values[1]).json()
+#     print(id_list)
+#     for key, value in scheme.items():
+#         for k, val in value.items():
+#             if type(val) is list:
+#                 for member in val:
+#                     print(member)
+#             if type(val) is str:
+#                 if val!= None:
+#                     print(val)                
+#             elif type(val) is dict:
+#                 for k2, v2 in val.items():
+#                     if v2 != None:
+#                         print(v2)
+            #if val != None:
+            #   print(val)
 
-add_refs()
+#add_refs()
+#parse_notes()
+#schema_to_dict()
+#parse_schema()
+#get_enums()
 
 '''
 To-Do, Thoughts, Etc.
 
--Test pulling in schema from API and manipulating using functions
--Get linked agents and events - check if other things are missing
--Location for external docs is dif than location for top containers, yet they have the same name
--Need to add subnote stuff to note_multipart and note_bioghist
- "job" (and term, etc.) issues, - job has a key which is entitled job, and so inherits all of the other top-level job stuff;
- fixed some of the recursion issues but not all
--Add Dynamic Enums if possible - in progress. Could then 
--Notes which are attached to the rights statements (check if I got this
--Add {'ref': None} to records where appropriate
--Get ref list from schema
--Could theoretically look up the actual enums too, now that I have their names- but this would be a different request.
+-Location for external docs is dif than location for top containers, yet they have the same name - both should be refs, though?
+    -Can probably differentiate somehow?
+    
+- "job" (and term, etc.) issues, - job has a key which is entitled job, and so inherits all of the other top-level job stuff;
+ fixed some of the recursion issues but not all - figure all this out.
+
+-add JSONModel types to values - pull from key
+
+-Could theoretically look up the actual enums too, now that I have their names- but this would be a different API request.
+    - Do this - find anything that does not have the value of none, and look up enums?
+
+-Check if other things are missing from schema
+-Documentation/comments
+-Remove extra call to schema?
+
+DONE:
+--Add {'ref': None} to records where appropriate - replace hard-coded list - DONE
+    -Get ref list from schema - find anything with a ref - not sure what the format looks like
+-Subnote info for note_multipart and note_bioghist - DONE
+-Get enums for linked agents and events - DONE
+-Get linked agents and events - DONE
+-Add enums if possible - DONE (but not for linked agents and events)
+-Test pulling in schema from API and manipulating using functions - DONE
+-Notes which are attached to the rights statements - DONE
 
 -Obviously most of these functions are pretty hacky and need to be cleaned up, but this serves as a proof of concept/starting point
+ '''
 
-add_refs()
-#schema_to_dict()
-#parse_schema()
-#parse_notes()
-#add_subrecords() '''

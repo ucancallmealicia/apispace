@@ -49,7 +49,7 @@ until I can figure out a more abstracted approach
 def create_records(jsonmodel_type, *subrecords):
     values = admin.login()
     csvfile = admin.opencsvdict()
-    data_dict = schema.add_refs()
+    data_dict = schema.parse_schema()
     #Loops through each file in the CSV
     for row in csvfile:
         new_record = {'jsonmodel_type': jsonmodel_type}
@@ -266,9 +266,8 @@ def create_file_versions():
     for row in csvfile:
         record_uri = row[0]
         file_uri = row[1]
-        identifier = row[2]
         record_json = requests.get(values[0] + record_uri, headers=values[1]).json()
-        new_file_version = {'file_uri': file_uri, 'jsonmodel_type': 'file_version', 'identifier': identifier}
+        new_file_version = {'file_uri': file_uri, 'jsonmodel_type': 'file_version'}
         record_json['file_versions'].append(new_file_version)
         record_data = json.dumps(record_json)
         record_update = requests.post(values[0] + record_uri, headers=values[1], data=record_data).json()

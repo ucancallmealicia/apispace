@@ -94,7 +94,7 @@ def opencsvout():
 def readtxt():
     filepath = input('Please enter path to input text file: ')
     filename = open(filepath, encoding='utf-8')
-    read = filename.read()
+    read = filename.readlines()
     return read
 
 def opentxt():
@@ -106,8 +106,8 @@ def setdirectory():
     directory = input('Please enter path to output directory: ')
     return directory
 
-def opentxts(directory, filename):
-    filepath = open(directory + '/' + filename, 'w', encoding='utf-8')
+def openxml(directory, filename):
+    filepath = open(directory + '/' + filename + '.xml', 'w', encoding='utf-8')
     return filepath
 
 def writealltxt(file, jsonname):
