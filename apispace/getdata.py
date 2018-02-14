@@ -2,6 +2,7 @@
 #~/anaconda3/bin/python
 
 import requests, json, csv, subprocess, os, re
+import pandas as pd
 from apispace import admin
 
 global_record_types = ['agents/corporate_entities', 'agents/families', 'agents/people', 'agents/software', 'by-external-id', 'config/enumerations', 'container_profile',
@@ -56,16 +57,69 @@ def export_ead(repo_id, resource):
     output.write(str(get_ead))
     output.close()
 
+#search for a resource record by identifier (i.e. RU 250). Should do this as a query? Would be easier
+#if all were in the id_0 field
+def search_by_id():
+    cursor = admin.login_db()
+    #perhaps change these to be arguments...there are a few other things to fix too.
+    repository_num = input('Please enter your repository number: ')
+    #create list from ead ids in text file
+    outfile = input('Please enter path to identifier list')
+    eadlist = open(outfile, 'r')
+    eadlisty = eadlist.read().split('\n')
+    #sometimes a newline gets stuck in there - this takes care of that
+    if eadlisty[-1] == '':
+        del eadlisty[-1]
+    moveon = input('Please press enter to run query...')
+    print(moveon)
+    #text file to store eads that don't have notes of the selected type attached
+    textfile = input('Please enter path to output text file: ')
+    output = open(textfile, 'a')
+    #CSV file to store query data
+    csvfile = input('Please enter path to output CSV: ')
+    #needs headers in output CSV
+    for ead in eadlisty:
+        print('querying ' + ead)
+        cursor.execute("""""")
+        result = cursor.fetchall()
+        #if no results, write ead id to text file
+        if not cursor.rowcount:
+            print('No results found for: ' + ead)
+            output.write(ead + '\n')
+        #if results, write to CSV
+        else:
+            for row in result:
+                print(row)
+                with open(csvfile, 'a', encoding='utf-8', newline='') as c:
+                    writer = csv.writer(c)
+                    writer.writerows([row])
+    output.close()
+    cursor.close()
+
+#this works locally, but want to use actual lookups in production
+def get_rids():
+    csvfile = admin.opencsv()
+    txtinput = admin.opentxtin()
+    txtoutput = admin.opentxt()
+    new_dict = {}
+    for row in csvfile:
+        new_dict[row[0]] = row[1]
+    for line in txtinput:
+        line = line.rstrip()
+        new_list = [k for k, v in new_dict.items() if line == v][0]
+        txtoutput.write('/repositories/12/resource_descriptions/' + new_list + '\n')    
+
 '''Takes a list of resource URIs, gets its EAD, and transforms it to Yale's BPG guidelines. Also need to add validation
 
 Note - URIs will have to be formatted like /repositories/12/resource_descriptions/resource_id.xml'''
 def etv_ead():
     values = admin.login()
-    inputfile = admin.readtxt()
+    inputfile = admin.opentxtin()
     outputfile = admin.opentxt()
     dirpath = admin.setdirectory()
     print('Downloading EAD files to directory')
     for ead_uri in inputfile:
+        print('Retrieving' + str(ead_uri).rstrip())
         get_ead = requests.get(values[0] + ead_uri + '.xml?include_unpublished=true', headers=values[1], stream=True).text
         #Finds URLs with 2-digit repo ids
         if re.search(r'[0-9]', ead_uri[15]):

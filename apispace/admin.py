@@ -106,6 +106,11 @@ def setdirectory():
     directory = input('Please enter path to output directory: ')
     return directory
 
+def opentxtin():
+    filepath = input('Please enter path to input text file: ')
+    filename = open(filepath, 'r', encoding='utf-8')
+    return filename
+
 def openxml(directory, filename):
     filepath = open(directory + '/' + filename + '.xml', 'w', encoding='utf-8')
     return filepath
@@ -128,7 +133,7 @@ def writetxt(file, jsonname):
 ################## ARCHIVESSPACE ADMIN-TYPE/GLOBAL FUNCTIONS ####################
 
 def setdefaultvalues():
-    print('placeholder')
+    return
     
 def update_enum_val_positions():
     values = login()
